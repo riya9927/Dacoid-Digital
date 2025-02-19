@@ -29,7 +29,6 @@ A modern quiz application built with React that features timer-based questions, 
 - React
 - Vite
 - TailwindCSS
-- IndexedDB (via idb)
 - React Router
 
 ## Project Structure
