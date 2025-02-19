@@ -8,7 +8,6 @@ A modern quiz application built with React that features timer-based questions, 
 - Instant feedback on answers
 - Score tracking
 - Quiz attempt history
-- IndexedDB storage for attempt persistence
 - Responsive design
 
 ## Running Locally
