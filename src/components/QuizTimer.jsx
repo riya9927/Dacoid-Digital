@@ -1,24 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-export default function QuizTimer({ duration, onTimeUp }) {
-  const [timeLeft, setTimeLeft] = useState(duration);
+const QUIZ_DURATION = 30 * 60; // 30 minutes in seconds
+
+const QuizTimer = ({ onTimeUp, isPaused }) => {
+  const [timeLeft, setTimeLeft] = useState(QUIZ_DURATION);
 
   useEffect(() => {
-    if (timeLeft <= 0) {
+    if (!isPaused && timeLeft > 0) {
+      const timer = setInterval(() => {
+        setTimeLeft(prev => prev - 1);
+      }, 1000);
+
+      return () => clearInterval(timer);
+    } else if (timeLeft === 0) {
       onTimeUp();
-      return;
     }
+  }, [timeLeft, isPaused, onTimeUp]);
 
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => prev - 1);
-    }, 1000);
+  // Reset timer when quiz is restarted
+  useEffect(() => {
+    setTimeLeft(QUIZ_DURATION);
+  }, []);
 
-    return () => clearInterval(timer);
-  }, [timeLeft, onTimeUp]);
+  // Format time to display minutes and seconds
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
 
   return (
-    <div className="text-xl font-semibold">
-      Time Left: {timeLeft}s
+    <div className="text-lg font-semibold">
+      Time left: {formatTime(timeLeft)}
     </div>
   );
-}
+};
+
+export default QuizTimer;
